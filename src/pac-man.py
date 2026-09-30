@@ -1,7 +1,7 @@
 import pygame
 import sys
 import time
-from mazegenerator import MazeGenerator
+from src.mazegenerator.Mazegenerator import MazeGenerator
 
 
 GAME_HIGHT = 512

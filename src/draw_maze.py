@@ -1,4 +1,4 @@
-from mazegenerator import MazeGenerator
+from src.mazegenerator.Mazegenerator import MazeGenerator
 import pygame
 import sys
 import math
