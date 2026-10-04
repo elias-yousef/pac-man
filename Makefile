@@ -1,6 +1,6 @@
 PYTHON = uv run python
 MAIN_SCRIPT = src/pac-man.py
-CONFIG_FILE = src/config.json
+CONFIG_FILE = config.json
 
 all: install lint run
 

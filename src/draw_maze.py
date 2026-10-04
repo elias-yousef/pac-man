@@ -1,4 +1,4 @@
-from src.mazegenerator.Mazegenerator import MazeGenerator
+from mazegenerator.Mazegenerator import MazeGenerator
 import pygame
 import sys
 import math
@@ -33,48 +33,7 @@ def draw_maze():
     y_axis = 0
     clock = pygame.time.Clock()
     arr = Maze.maze
-    for row in arr:
-        for element in row:
-            if math.isclose(x_axis, GAME_WIDTH, abs_tol=5):
-                print("==")
-                x_axis = 0
-            if element == 1:
-                window.blit(image_1, (x_axis, y_axis))
-            elif element == 2:
-                window.blit(image_2, (x_axis, y_axis))
-            elif element == 3:
-                window.blit(image_3, (x_axis, y_axis))
-            elif element == 4:
-                window.blit(image_4, (x_axis, y_axis))
-            elif element == 5:
-                window.blit(image_5, (x_axis, y_axis))
-            elif element == 6:
-                window.blit(image_6, (x_axis, y_axis))
-            elif element == 7:
-                window.blit(image_7, (x_axis, y_axis))
-            elif element == 8:
-                window.blit(image_8, (x_axis, y_axis))
-            elif element == 9:
-                window.blit(image_9, (x_axis, y_axis))
-            elif element == 10:
-                window.blit(image_10, (x_axis, y_axis))
-            elif element == 11:
-                window.blit(image_11, (x_axis, y_axis))
-            elif element == 12:
-                window.blit(image_12, (x_axis, y_axis))
-            elif element == 13:
-                window.blit(image_13, (x_axis, y_axis))
-            elif element == 14:
-                window.blit(image_14, (x_axis, y_axis))
-            elif element == 15:
-                window.blit(image_15, (x_axis, y_axis))
-            x_axis += GAME_WIDTH // maze_size_x
-            print(f"x:{x_axis}")
-            pygame.display.update()
-            clock.tick(60)
-        y_axis += GAME_HIGHT // maze_size_y
-        print(f"y{y_axis}")
+
 
     
-
 draw_maze()
