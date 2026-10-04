@@ -3,6 +3,23 @@ import sys
 from pathlib import Path
 from mazegenerator.Mazegenerator import MazeGenerator
 
+
+def neighbors(
+        maze: list[list[int]], x: int, y: int,
+        col_size: int, row_size: int
+        ) -> list[int]:
+    alowed = []
+    if x > 0 and not maze[y][x] & 8:
+        alowed.append(4)
+    if x < row_size and not maze[y][x] & 2:
+        alowed.append(3)
+    if y > 0 and not maze[y][x] & 1:
+        alowed.append(1)
+    if y < col_size and not maze[y][x] & 4:
+        alowed.append(2)
+    return alowed
+
+
 def main() -> None:
     pygame.init()
     GAME_HIGHT = 512
@@ -10,6 +27,8 @@ def main() -> None:
     TILE_SIZE = GAME_WIDTH // 15
     PLAYER_X = 7 * TILE_SIZE
     PLAYER_Y = 7 * TILE_SIZE
+    col_size = 15
+    row_size = 15
 
     cell_images = {
         1: "/Users/elias/pacman/images/1.bmp",
@@ -35,6 +54,7 @@ def main() -> None:
             pygame.K_d: 3, pygame.K_RIGHT: 3,
               pygame.K_a: 4, pygame.K_LEFT: 4
               }
+
     window = pygame.display.set_mode((GAME_WIDTH, GAME_HIGHT))
 
     loaded_images = {}
@@ -44,81 +64,47 @@ def main() -> None:
     clock = pygame.time.Clock()
     pygame.display.set_caption("pac-man")
 
-    maze = MazeGenerator((15, 15), seed=42)
+    maze = MazeGenerator((row_size, col_size), seed=42)
     maze_arr = maze.maze
 
+    current_direction = None
+    next_direction = None
     running = True
-    solid_walls = []
     while running:
-        OLD_X = PLAYER_X
-        OLD_Y = PLAYER_Y
+        window.fill((0, 0, 0))
         for row_index, row in enumerate(maze_arr):
             for col_index, cell_value in enumerate(row):
                 if cell_value > 0:
                     x_pixel = col_index * TILE_SIZE
                     y_pixel = row_index * TILE_SIZE
                     window.blit(loaded_images[cell_value], (x_pixel, y_pixel))
-
+        current_col = PLAYER_X // TILE_SIZE
+        current_row = PLAYER_Y // TILE_SIZE
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key in keys and keys[event.key] == 1:
-                    OLD_Y = PLAYER_Y
-                    PLAYER_Y -= 34
-                if event.key in keys and keys[event.key] == 2:
-                    OLD_Y = PLAYER_Y
-                    PLAYER_Y += 34
-                if event.key in keys and keys[event.key] == 3:
-                    OLD_X = PLAYER_X
-                    PLAYER_X += 34
-                if event.key in keys and keys[event.key] == 4:
-                    OLD_X = PLAYER_X
-                    PLAYER_X -= 34
+            elif event.type == pygame.KEYDOWN:
+                next_direction = event.key
+        alowed = neighbors(maze_arr, current_col, current_row, col_size, row_size)
+        if next_direction in keys:
+            if keys[next_direction] in alowed:
+                current_direction = next_direction
+        if current_direction in keys and keys[current_direction] == 1 and 1 in alowed:
+            PLAYER_Y -= 34
+        elif current_direction in keys and keys[current_direction] == 2 and 2 in alowed:
+            PLAYER_Y += 34
+        elif current_direction in keys and keys[current_direction] == 3 and 3 in alowed:
+            PLAYER_X += 34
+        elif current_direction in keys and keys[current_direction] == 4 and 4 in alowed:
+            PLAYER_X -= 34
+
         player_rect = pygame.Rect(PLAYER_X, PLAYER_Y, TILE_SIZE, TILE_SIZE)
         pygame.draw.rect(window, (255, 255, 255), player_rect)
-        collision_index = player_rect.collidelist(solid_walls)
-        if collision_index != -1:
-            PLAYER_X = OLD_X
-            PLAYER_Y = OLD_Y
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(5)
     pygame.quit()
     sys.exit(0)    
 
-
-
-
-
-
-
-# GAME_HIGHT = 512
-# GAME_WIDTH = 512
-# m = MazeGenerator(size=(15, 15), seed=42)
-# pygame.init()
-# window = pygame.display.set_mode((GAME_WIDTH, GAME_HIGHT))
-# clock = pygame.time.Clock()
-# player = pygame.Rect(150, 150, 50, 50)
-# is_true = True
-# while is_true:
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             pygame.quit()
-#             sys.exit(1)
-#     keys = pygame.key.get_pressed()
-#     if keys[pygame.K_UP] or keys[pygame.K_w]:
-#         player.y -= 5
-#     if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-#         player.y += 5
-#     if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-#         player.x += 5
-#     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-#         player.x -= 5
-    
-#     window.fill((1, 1, 1))
-#     pygame.draw.rect(window, (255, 255, 255), player)
-#     pygame.display.update()
-#     clock.tick(60)
 
 if __name__ == "__main__":
     main()
