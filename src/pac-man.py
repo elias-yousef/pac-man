@@ -87,21 +87,24 @@ def main() -> None:
                 next_direction = event.key
         alowed = neighbors(maze_arr, current_col, current_row, col_size, row_size)
         if next_direction in keys:
-            if keys[next_direction] in alowed:
-                current_direction = next_direction
-        if current_direction in keys and keys[current_direction] == 1 and 1 in alowed:
-            PLAYER_Y -= 34
-        elif current_direction in keys and keys[current_direction] == 2 and 2 in alowed:
-            PLAYER_Y += 34
-        elif current_direction in keys and keys[current_direction] == 3 and 3 in alowed:
-            PLAYER_X += 34
-        elif current_direction in keys and keys[current_direction] == 4 and 4 in alowed:
-            PLAYER_X -= 34
+            if PLAYER_X % TILE_SIZE == 0 and PLAYER_Y % TILE_SIZE == 0:
+                if keys[next_direction] in alowed:
+                    current_direction = next_direction
+                if current_direction in keys and keys[current_direction] not in alowed:
+                        current_direction = None
+        if current_direction in keys and keys[current_direction] == 1:
+            PLAYER_Y -= 2
+        elif current_direction in keys and keys[current_direction] == 2:
+            PLAYER_Y += 2
+        elif current_direction in keys and keys[current_direction] == 3:
+            PLAYER_X += 2
+        elif current_direction in keys and keys[current_direction] == 4:
+            PLAYER_X -= 2
 
         player_rect = pygame.Rect(PLAYER_X, PLAYER_Y, TILE_SIZE, TILE_SIZE)
         pygame.draw.rect(window, (255, 255, 255), player_rect)
         pygame.display.update()
-        clock.tick(5)
+        clock.tick(60)
     pygame.quit()
     sys.exit(0)    
 
