@@ -22,13 +22,13 @@ def neighbors(
 
 def main() -> None:
     pygame.init()
-    GAME_HIGHT = 512
-    GAME_WIDTH = 512
-    TILE_SIZE = GAME_WIDTH // 15
-    PLAYER_X = 7 * TILE_SIZE
-    PLAYER_Y = 7 * TILE_SIZE
     col_size = 15
     row_size = 15
+    TILE_SIZE = 512 // 15
+    GAME_HIGHT = TILE_SIZE * col_size
+    GAME_WIDTH = TILE_SIZE * col_size
+    PLAYER_X = 7 * TILE_SIZE
+    PLAYER_Y = 7 * TILE_SIZE
 
     cell_images = {
         1: "/Users/elias/pacman/images/1.bmp",
@@ -60,6 +60,7 @@ def main() -> None:
     loaded_images = {}
     for cell_value, path in cell_images.items():
         loaded_images[cell_value] = pygame.image.load(Path(path)).convert()
+    pacman = pygame.image.load((Path("/Users/elias/pacman/images/pacman1.bmp"))).convert()
 
     clock = pygame.time.Clock()
     pygame.display.set_caption("pac-man")
@@ -100,9 +101,7 @@ def main() -> None:
             PLAYER_X += 2
         elif current_direction in keys and keys[current_direction] == 4:
             PLAYER_X -= 2
-
-        player_rect = pygame.Rect(PLAYER_X, PLAYER_Y, TILE_SIZE, TILE_SIZE)
-        pygame.draw.rect(window, (255, 255, 255), player_rect)
+        window.blit(pacman, (x_pixel, y_pixel))
         pygame.display.update()
         clock.tick(60)
     pygame.quit()
