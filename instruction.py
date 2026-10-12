@@ -11,7 +11,6 @@ def display_instructions(screen: pygame.Surface) -> None:
     font_hint = pygame.font.SysFont("corbel", 22, italic=True)
     font_section = pygame.font.SysFont("corbel", 28, bold=True)
 
-    # Colors
     BG = (28, 24, 45)              # Dark purple background
     WHITE = (248, 244, 255)        # Soft white
     PINK = (255, 170, 200)         # Pastel pink
@@ -51,10 +50,8 @@ def display_instructions(screen: pygame.Surface) -> None:
             if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
                 waiting = False
 
-        # Background
         screen.fill(BG)
 
-        # Decorative stars
         decorations = [
             (45, 45, PINK),
             (width - 45, 55, LAVENDER),
@@ -66,12 +63,10 @@ def display_instructions(screen: pygame.Surface) -> None:
             star = font_text.render("✦", True, color)
             screen.blit(star, star.get_rect(center=(x, y)))
 
-        # Main title
         title = font_title.render("HOW TO PLAY", True, PINK)
         title_rect = title.get_rect(center=(width // 2, 55))
         screen.blit(title, title_rect)
 
-        # Subtitle
         subtitle = font_hint.render(
             "✧  A little guide to your Pac-Man adventure  ✧",
             True,
@@ -82,7 +77,6 @@ def display_instructions(screen: pygame.Surface) -> None:
             subtitle.get_rect(center=(width // 2, 100)),
         )
 
-        # Divider
         pygame.draw.line(
             screen, LINE,
             (width // 2 - 250, 130),
@@ -90,7 +84,6 @@ def display_instructions(screen: pygame.Surface) -> None:
             2,
         )
 
-        # Gameplay instructions
         y = 155
 
         for symbol, heading, description in instructions:

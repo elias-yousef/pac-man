@@ -1,6 +1,6 @@
-from pac-man import main
+#from pac-man import main
 from instruction import display_instructions
-from highscore import HighscoreManager
+#from highscore import HighscoreManager
 import pygame
 import sys
 #import Charcacters
@@ -35,7 +35,7 @@ height = 600
 
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("pac-man menu!")
-font = pygame.font.SysFont("Corbel", 20)
+font = pygame.font.SysFont("Corbel", 26, bold=True)
 
 
 def window():
@@ -127,24 +127,24 @@ def display_highscores(screen, highscores):
 
 def menu():
     global screen, width, height
-    highscores = HighscoreManager("hs.json")
-    highscores.load_scores()
+    #highscores = HighscoreManager("hs.json")
+    #highscores.load_scores()
 
     while True:
         screen.fill(BG)
         mouse = pygame.mouse.get_pos()
 
         # Create buttons
-        startgame = pygame.Rect(0, 0, 200, 40)
-        hscore = pygame.Rect(0, 0, 200, 40)
-        inst = pygame.Rect(0, 0, 200, 40)
-        ext = pygame.Rect(0, 0, 200, 40)
+        startgame = pygame.Rect(0, 0, 300, 50)
+        hscore = pygame.Rect(0, 0, 300, 50)
+        inst = pygame.Rect(0, 0, 300, 50)
+        ext = pygame.Rect(0, 0, 300, 50)
 
         # Center buttons
-        startgame.center = (width // 2, height // 2 - 90)
-        hscore.center = (width // 2, height // 2 - 30)
-        inst.center = (width // 2, height // 2 + 30)
-        ext.center = (width // 2, height // 2 + 90)
+        startgame.center = (width // 2, height // 2 - 105)
+        hscore.center = (width // 2, height // 2 - 35)
+        inst.center = (width // 2, height // 2 + 35)
+        ext.center = (width // 2, height // 2 + 106)
 
         # Button text
         s_text = font.render("START GAME", True, WHITE)
@@ -198,11 +198,11 @@ def menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
 
-                    if startgame.collidepoint(event.pos):
-                        main()
+                    #if startgame.collidepoint(event.pos):
+                   #     main()
                     
-                    if hscore.collidepoint(event.pos):
-                        display_highscores(screen, highscores)
+                    #if hscore.collidepoint(event.pos):
+                     #   display_highscores(screen, highscores)
                     if inst.collidepoint(event.pos):
                         display_instructions(screen)
                     
