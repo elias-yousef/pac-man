@@ -6,7 +6,7 @@ all: install lint run
 
 install:
 	uv venv
-	uv pip install pygame
+	uv pip install pygame-ce
 
 run:
 	export PYTHONPATH=$PWD
