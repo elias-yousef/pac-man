@@ -40,18 +40,20 @@ class Ghosts:
     def update(self, player_col: int, player_row: int):
         self.col = self.pixel_x // self.TILE_SIZE
         self.row = self.pixel_y // self.TILE_SIZE
+        distance = abs(self.col - player_col) + abs(self.row - player_row)
         if self.pixel_x % self.TILE_SIZE == 0 and self.pixel_y % self.TILE_SIZE == 0:
             self.neighbors()
-            if self.current_direction == 1 and len(self.alowed) > 1:
-                self.alowed.remove(4)
-            elif self.current_direction == 8 and len(self.alowed) > 1:
-                self.alowed.remove(2)
-            if self.current_direction == 2 and len(self.alowed) > 1:
-                self.alowed.remove(8)
-            elif self.current_direction == 4 and len(self.alowed) > 1:
-                self.alowed.remove(1)
+            if len(self.alowed) > 1:
+                if self.current_direction == 1 and 4 in self.alowed:
+                    self.alowed.remove(4)
+                elif self.current_direction == 8 and 2 in self.alowed:
+                    self.alowed.remove(2)
+                elif self.current_direction == 2 and 8 in self.alowed:
+                    self.alowed.remove(8)
+                elif self.current_direction == 4 and 1 in self.alowed:
+                    self.alowed.remove(1)
             self.current_direction = random.choice(self.alowed)
-        if self.mode == "chasing":
+        if self.mode == "chasing" and distance > 7:
             if self.current_direction == 1:
                 self.pixel_y -= 2
             elif self.current_direction == 2:
@@ -60,6 +62,8 @@ class Ghosts:
                 self.pixel_y += 2
             elif self.current_direction == 8:
                 self.pixel_x -= 2
+        elif self.mode == "chasing" and distance <= 7:
+            pass
         elif self.mode == "edible":
                 pass
 
