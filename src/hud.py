@@ -46,7 +46,7 @@ class HUD:
 
         pygame.font.init()
         self.font= pygame.font.SysFont("arial", 17, bold=True)#("Comic Sans MS", 24, bold=True)
-        image_path = Path(__file__).resolve().parent / "pacman.png"
+        image_path = Path(__file__).resolve().parent.parent / "images" / f"pacman.bmp"
 
         self.ghost = pygame.image.load(image_path).convert_alpha()
         self.ghost = pygame.transform.scale(self.ghost, (16, 16))

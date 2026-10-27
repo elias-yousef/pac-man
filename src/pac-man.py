@@ -2,8 +2,7 @@ import pygame
 import sys
 from pathlib import Path
 from mazegenerator.Mazegenerator import MazeGenerator
-from Charcacters import Game, Gosts, Pacman
-
+from Charcacters import Game, Ghosts, Pacman
 
 def main() -> None:
     pygame.init()
