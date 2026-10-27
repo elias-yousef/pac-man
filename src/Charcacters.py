@@ -18,6 +18,7 @@ class Ghosts:
         self.TILE_SIZE = TILE_SIZE
         self.ghost = ghost_num
         self.current_direction = None
+        self.chosen_path = None
         self.mode = "chasing"
         self.script_dir = Path(__file__).resolve().parent.parent
         self.image = pygame.image.load(self.script_dir / "images" / f"ghost{ghost_num}.png").convert_alpha()
@@ -37,12 +38,16 @@ class Ghosts:
         if self.row < self.col_size - 1 and not self.maze_arr[self.row][self.col] & 4:
             self.alowed.append(4)
 
+    def chasing_path(self, player_col, player_row):
+        pass
+
+
     def update(self, player_col: int, player_row: int):
         self.col = self.pixel_x // self.TILE_SIZE
         self.row = self.pixel_y // self.TILE_SIZE
         distance = abs(self.col - player_col) + abs(self.row - player_row)
+        self.neighbors()
         if self.pixel_x % self.TILE_SIZE == 0 and self.pixel_y % self.TILE_SIZE == 0:
-            self.neighbors()
             if len(self.alowed) > 1:
                 if self.current_direction == 1 and 4 in self.alowed:
                     self.alowed.remove(4)
@@ -53,7 +58,8 @@ class Ghosts:
                 elif self.current_direction == 4 and 1 in self.alowed:
                     self.alowed.remove(1)
             self.current_direction = random.choice(self.alowed)
-        if self.mode == "chasing" and distance > 7:
+        if self.mode == "chasing" and distance > 6:
+            self.chasing_path(player_col, player_row)
             if self.current_direction == 1:
                 self.pixel_y -= 2
             elif self.current_direction == 2:
@@ -62,7 +68,7 @@ class Ghosts:
                 self.pixel_y += 2
             elif self.current_direction == 8:
                 self.pixel_x -= 2
-        elif self.mode == "chasing" and distance <= 7:
+        elif self.mode == "chasing" and distance <= 6:
             pass
         elif self.mode == "edible":
                 pass
