@@ -38,17 +38,10 @@ class Ghosts:
         if self.row < self.col_size - 1 and not self.maze_arr[self.row][self.col] & 4:
             self.alowed.append(4)
 
-    def chasing_path(self, player_col, player_row):
-        pass
-
-
-    def update(self, player_col: int, player_row: int):
-        self.col = self.pixel_x // self.TILE_SIZE
-        self.row = self.pixel_y // self.TILE_SIZE
-        distance = abs(self.col - player_col) + abs(self.row - player_row)
-        self.neighbors()
+    def direction(self, player_col: int, player_row: int):
+        try_dir = {}
         if self.pixel_x % self.TILE_SIZE == 0 and self.pixel_y % self.TILE_SIZE == 0:
-            if len(self.alowed) > 1:
+            if len(self.alowed) > 1 and self.distance > 6:
                 if self.current_direction == 1 and 4 in self.alowed:
                     self.alowed.remove(4)
                 elif self.current_direction == 8 and 2 in self.alowed:
@@ -57,9 +50,30 @@ class Ghosts:
                     self.alowed.remove(8)
                 elif self.current_direction == 4 and 1 in self.alowed:
                     self.alowed.remove(1)
-            self.current_direction = random.choice(self.alowed)
-        if self.mode == "chasing" and distance > 6:
-            self.chasing_path(player_col, player_row)
+                self.current_direction = random.choice(self.alowed)
+            if self.distance <= 6:
+                for allow in self.alowed:
+                    if allow == 1:
+                        try_dir[1] = abs(self.col - player_col) + abs(self.row - 1 - player_row)
+                    if allow == 2:
+                        try_dir[2] = abs(self.col + 1 - player_col) + abs(self.row - player_row)
+                    if allow == 4:
+                        try_dir[4] = abs(self.col - player_col) + abs(self.row + 1 - player_row)
+                    if allow == 8:
+                        try_dir[8] = abs(self.col - 1 - player_col) + abs(self.row - player_row)
+                if try_dir:
+                    self.current_direction = min(try_dir, key=try_dir.get)
+                else:
+                    self.current_direction = 0 
+
+
+    def update(self, player_col: int, player_row: int):
+        self.col = self.pixel_x // self.TILE_SIZE
+        self.row = self.pixel_y // self.TILE_SIZE
+        self.distance = abs(self.col - player_col) + abs(self.row - player_row)
+        self.neighbors()
+        self.direction(player_col, player_row)
+        if self.mode == "chasing":
             if self.current_direction == 1:
                 self.pixel_y -= 2
             elif self.current_direction == 2:
@@ -68,10 +82,8 @@ class Ghosts:
                 self.pixel_y += 2
             elif self.current_direction == 8:
                 self.pixel_x -= 2
-        elif self.mode == "chasing" and distance <= 6:
-            pass
         elif self.mode == "edible":
-                pass
+            pass
 
 
 class Pacman:
@@ -86,8 +98,8 @@ class Pacman:
         self.current_col = self.PLAYER_X // self.TILE_SIZE
         self.current_row = self.PLAYER_Y // self.TILE_SIZE
         self.script_dir = Path(__file__).resolve().parent.parent
-        self.abs_path_pacman = self.script_dir / "images" / f"pacman.bmp"
-        self.pacman = pygame.image.load(self.abs_path_pacman).convert()
+        self.abs_path_pacman = self.script_dir / "images" / f"pacman.png"
+        self.pacman = pygame.image.load(str(self.abs_path_pacman))
         self.pacman = pygame.transform.scale(self.pacman, (self.TILE_SIZE, self.TILE_SIZE))
 
     def draw_pac(self, window):

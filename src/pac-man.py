@@ -4,6 +4,7 @@ from pathlib import Path
 from mazegenerator.Mazegenerator import MazeGenerator
 from Charcacters import Game, Ghosts, Pacman
 
+
 def main() -> None:
     pygame.init()
     game = Game()
