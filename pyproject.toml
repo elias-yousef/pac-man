@@ -7,9 +7,7 @@ authors = [
     { name = "ELias", email = "elias2005new@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = [
-    "pygame>=2.6.1",
-]
+dependencies = []
 
 [project.scripts]
 pacman = "pacman:main"

@@ -109,7 +109,7 @@ class Pacman:
         self.alowed = []
 
         self.script_dir = Path(__file__).resolve().parent.parent
-        self.abs_path_pacman = self.script_dir / "images" / f"pacman.png"
+        self.abs_path_pacman = self.script_dir / "images" / f"pacman.bmp"
         self.pacman = pygame.image.load(str(self.abs_path_pacman))
         self.pacman = pygame.transform.scale(self.pacman, (self.TILE_SIZE, self.TILE_SIZE))
 
@@ -159,14 +159,18 @@ class Pacman:
 class Game:
     def __init__(self, config: dict):
         self.config = config
+        self.pacgum = 40
+        self.super_gums = 4
+        self.current_level = 2
+        self.max_level = 10
         self.running = True
         self.lives = config["lives"]
         self.pacgum_points = config["points_per_pacgum"]
-        self.seed = config.get("seed", 42)
+        self.seed = 42
         level_info = config["levels"]
         self.row_size = level_info["width"]
         self.col_size = level_info["height"]
-        self.TILE_SIZE = 32
+        self.TILE_SIZE = 40
         self.GAME_WIDTH = self.TILE_SIZE * self.row_size
         self.GAME_HIGHT = self.TILE_SIZE * self.col_size
         self.window = pygame.display.set_mode((self.GAME_WIDTH, self.GAME_HIGHT))
@@ -182,6 +186,16 @@ class Game:
 
         self.load_maze_images()
         self.clock = pygame.time.Clock()
+
+    def generate_maze(self) -> None:
+        self.seed = random.random()
+        self.maze_arr = MazeGenerator((self.row_size, self.col_size), perfect=False, seed=self.seed).maze
+
+    def check_level_completion(self) -> None:
+        if self.pacgum == 0 and self.super_gums == 0:
+            if self.current_level < self.max_level:
+                self.current_level += 1
+                self.generate_maze()
 
     def draw_maze(self) -> None: 
         for row_index, row in enumerate(self.maze_arr):
@@ -209,6 +223,7 @@ class Game:
     def run(self) -> None:
         while self.running:
             self.window.fill((0, 0, 0))
+            self.check_level_completion()
             self.draw_maze()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -228,7 +243,6 @@ class Game:
                     self.pacman.lives -= 1
                     self.pacman.PLAYER_X = 7 * self.TILE_SIZE
                     self.pacman.PLAYER_Y = 7 * self.TILE_SIZE
-                    # i need to reset the ghosts too here
                     if self.pacman.lives <= 0:
                         self.running = False
                     else:
