@@ -1,6 +1,6 @@
 {
     "highscore_file": "highscores.json",
-    "levels": {"width": 15, "height": 15},
+    "levels": {"width": 20, "height": 20},
     "lives": 3,
     "pacgum": 42,
     "points_per_pacgum": 10,

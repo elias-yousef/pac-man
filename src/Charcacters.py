@@ -109,7 +109,7 @@ class Pacman:
         self.alowed = []
 
         self.script_dir = Path(__file__).resolve().parent.parent
-        self.abs_path_pacman = self.script_dir / "images" / f"pacman.bmp"
+        self.abs_path_pacman = self.script_dir / "images" / f"pacman.png"
         self.pacman = pygame.image.load(str(self.abs_path_pacman))
         self.pacman = pygame.transform.scale(self.pacman, (self.TILE_SIZE, self.TILE_SIZE))
 
@@ -183,7 +183,6 @@ class Game:
             Ghosts(2, 0, self.col_size - 1, self.TILE_SIZE, self.maze_arr, self.row_size, self.col_size),
             Ghosts(3, self.row_size - 1, self.col_size - 1, self.TILE_SIZE, self.maze_arr, self.row_size, self.col_size),
         ]
-
         self.load_maze_images()
         self.clock = pygame.time.Clock()
 
@@ -196,6 +195,20 @@ class Game:
             if self.current_level < self.max_level:
                 self.current_level += 1
                 self.generate_maze()
+
+    def draw_gums(self) -> None:
+        self.super_gums_axis = [
+            (6, 6),
+            (self.GAME_WIDTH - 38, 6),
+            (6, self.GAME_WIDTH - 38),
+            (self.GAME_WIDTH - 38, self.GAME_WIDTH - 38)
+            ]
+        self.script_dir = Path(__file__).resolve().parent.parent
+        self.abs_path_pacman = self.script_dir / "images" / f"Strawberry.png"
+        self.supergums_image = pygame.image.load(str(self.abs_path_pacman))
+        self.supergums_image = pygame.transform.scale(self.supergums_image, (30, 30))
+        for corr in self.super_gums_axis:
+            self.window.blit(self.supergums_image, corr)
 
     def draw_maze(self) -> None: 
         for row_index, row in enumerate(self.maze_arr):
@@ -225,6 +238,7 @@ class Game:
             self.window.fill((0, 0, 0))
             self.check_level_completion()
             self.draw_maze()
+            self.draw_gums()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
