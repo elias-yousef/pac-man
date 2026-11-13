@@ -40,7 +40,7 @@ pygame.display.set_caption("Pac-Man")
 font = pygame.font.SysFont("Corbel", 26, bold=True)
 
 
-def menu():
+def main_menu():
     global screen, width, height
 
    
@@ -167,7 +167,7 @@ def menu():
 
 
 if __name__ == "__main__":
-    menu()
+    main_menu()
 
 
 

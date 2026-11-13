@@ -197,7 +197,7 @@ def display_instructions(screen):
         screen.blit(esc_text, (x, y))
         y += 25
 
-               heading = heading_font.render("GAME RULES", True, PURPLE)
+        heading = heading_font.render("GAME RULES", True, PURPLE)
         screen.blit(heading, (x, y))
         y += 32
 
