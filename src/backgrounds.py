@@ -3,6 +3,19 @@ from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent.parent / "images"
 
+def load_sprite(path, size, tolerance=40):
+    image = pygame.image.load(str(path)).convert_alpha()
+    image = pygame.transform.scale(image, size)
+    bg = image.get_at((0, 0))
+    for x in range(size[0]):
+        for y in range(size[1]):
+            r, g, b, a = image.get_at((x, y))
+            if (abs(r - bg.r) <= tolerance
+                    and abs(g - bg.g) <= tolerance
+                    and abs(b - bg.b) <= tolerance):
+                image.set_at((x, y), (0, 0, 0, 0))
+    return image
+
 class Backgrounds:
 
     def __init__(self, screen_size):
@@ -10,11 +23,10 @@ class Backgrounds:
         self.screen_size = screen_size
 
         screens = {
-            "menu": "menu.jpg",
-            "instructions": "instruction.jpg",
-            "highscores": "highscore.jpg",
-            "pause": "pause.jpg",
-            "victory": "victory.jpg",
+            "menu": "menus.jpg",
+            "instructions": "inst.jpg",
+            "highscores": "hs.jpg",
+            "victory": "vict.jpg",
             "game_over": "gameover.jpg"
         }
 

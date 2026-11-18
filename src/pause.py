@@ -1,7 +1,7 @@
 import pygame
 import sys
 from backgrounds import Backgrounds
-
+from pathlib import Path
 
 '''
 while running:
@@ -16,9 +16,15 @@ while running:
 
 
 def pause(screen) -> str:
-
-    title_font = pygame.font.SysFont("Corbel", 44, bold=True)
-    text_font = pygame.font.SysFont("Corbel", 25)
+    font_path = Path(__file__).resolve().parent.parent / "fonts" / "PressStart2P-Regular.ttf"
+    if font_path.exists():
+        text_font = pygame.font.Font(str(font_path), 12)
+        title_font = pygame.font.Font(str(font_path), 12)
+    else:
+        text_font = pygame.font.SysFont("monospace", 16, bold=True)  # fallback
+        title_font = pygame.font.SysFont("monospace", 44, bold=True) 
+    #title_font = pygame.font.SysFont("Corbel", 44, bold=True)
+    #text_font = pygame.font.SysFont("Corbel", 25)
 
     BG = (246, 243, 238)
     PURPLE = (153, 102, 204)

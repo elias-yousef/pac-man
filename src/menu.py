@@ -137,7 +137,7 @@ def menu(config):
 
     global screen, WIDTH, HEIGHT
 
-    score_file = Path(__file__).resolve().parent / "hs.json"
+    score_file = Path(__file__).resolve().parent / "score.json"
     config_file = Path(__file__).resolve().parent / "config.json"
 
     manager = HighscoreManager(str(score_file))
@@ -202,16 +202,16 @@ def menu(config):
                 )
 
                 backgrounds = Backgrounds((WIDTH, HEIGHT))
-
             elif startgame.is_clicked(event):
-
                 game = Game(config=config)
                 result = game.run()
-                #result = run_game()
+
+                screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+                backgrounds = Backgrounds(screen.get_size())
 
                 if result == "quit":
                     running = False
-
+    
             elif hscore.is_clicked(event):
 
                 manager.load_scores()
@@ -244,7 +244,11 @@ def menu(config):
 
 
 if __name__ == "__main__":
-    menu()
+    import json
+    config_file = Path(__file__).resolve().parent / "config.json"
+    with open(config_file) as f:
+        config = json.load(f)
+    menu(config)
 
 
 """
